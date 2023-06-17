@@ -47,7 +47,8 @@ apps:
       - removable-media
       - unity7
       - screen-inhibit-control
-     
+    slots:
+      - mpris 
       
 parts:
   audacious:
@@ -228,6 +229,7 @@ parts:
     stage-packages:
       - libmp3lame0
       - libaom3
+      - libfdk-aac2
     stage:
       - -usr/include 
     
