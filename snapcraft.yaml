@@ -11,15 +11,26 @@ architectures:
   - build-on: amd64
   - build-on: armhf
   - build-on: arm64
+  
 layout:
   /usr/lib/audacious:
     symlink: $SNAP/usr/lib/audacious
 
+
+slots:
+  audaious:
+    interface: dbus
+    bus: session
+    name: org.atheme.audacious 
+  mpris:
+    name: audacious 
+  
+  
 apps:
   audacious:
     command: usr/bin/audacious
     extensions: [gnome]
-    common-id: org.cc321.audacious
+    common-id: org.atheme.audacious
     desktop: usr/share/applications/audacious.desktop
     plugs:
       - home
@@ -47,7 +58,6 @@ parts:
        - --prefix=/usr
        - --enable-gtk3
        - --disable-qt
-       - --disable-dbus
        - --with-buildstamp='Snapcraft'
     override-pull: |
       craftctl default
