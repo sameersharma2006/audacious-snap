@@ -95,9 +95,6 @@ parts:
       - libmms0
       - libneon27
       - libfaad2
-    override-stage: |
-      craftctl default
-      sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc  
     organize:
       snap/audacious/current/usr: usr
     
