@@ -56,10 +56,10 @@ parts:
     after: [ffmpeg]
     plugin: meson
     meson-parameters:
-       - --prefix=/snap/audacious/current/usr
-       - --gtk3=true
-       - --qt=false
-       - --buildstamp='Snapcraft'
+       - -Dprefix=/snap/audacious/current/usr
+       - -Dgtk3=true
+       - -Dqt=false
+       - -Dbuildstamp='Snapcraft'
     override-pull: |
       craftctl default
       craftctl set version=$(git describe --tags --abbrev=0)
@@ -107,9 +107,9 @@ parts:
     source: https://github.com/audacious-media-player/audacious-plugins.git 
     plugin: meson
     meson-parameters:
-       - --prefix=snap/audacious-plugins/current/usr
-       - --gtk3=true
-       - --qt=false
+       - -Dprefix=snap/audacious-plugins/current/usr
+       - -Dgtk3=true
+       - -Dqt=false
     build-packages:
       - curl
       - build-essential
