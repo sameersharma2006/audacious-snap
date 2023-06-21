@@ -104,7 +104,7 @@ parts:
     source: https://github.com/audacious-media-player/audacious-plugins.git 
     plugin: meson
     meson-parameters:
-       - -Dprefix=snap/audacious-plugins/current/usr
+       - -Dprefix=usr
        - -Dgtk3=true
        - -Dqt=false
     build-packages:
@@ -188,9 +188,7 @@ parts:
       - lirc-x
       - lirc-drv-irman
       - libaudcore5
-    organize:
-      snap/audacious-plugins/current/usr: usr
-      
+   
   ffmpeg:
     # WORKAROUND:
     # Build from source because the ffmpeg package installs libraries as dependencies
