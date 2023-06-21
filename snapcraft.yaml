@@ -54,12 +54,12 @@ parts:
   audacious:
     source: https://github.com/audacious-media-player/audacious.git
     after: [ffmpeg]
-    plugin: autotools
-    autotools-configure-parameters:
-       - --prefix=/usr
-       - --enable-gtk3
-       - --disable-qt
-       - --with-buildstamp='Snapcraft'
+    plugin: meson
+    meson-parameters:
+       - --prefix=/snap/audacious/current/usr
+       - --gtk3=true
+       - --qt=false
+       - --buildstamp='Snapcraft'
     override-pull: |
       craftctl default
       craftctl set version=$(git describe --tags --abbrev=0)
@@ -98,16 +98,18 @@ parts:
     override-stage: |
       craftctl default
       sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc  
+    organize:
+      snap/audacious/current/usr: usr
+    
     
   audacious-plugins:
     after: [audacious]
     source: https://github.com/audacious-media-player/audacious-plugins.git 
-    plugin: autotools
-    autotools-configure-parameters:
-       - --prefix=/usr
-       - --enable-gtk3
-       - --disable-qt
-       - --enable-aac
+    plugin: meson
+    meson-parameters:
+       - --prefix=snap/audacious-plugins/current/usr
+       - --gtk3=true
+       - --qt=false
     build-packages:
       - curl
       - build-essential
@@ -189,6 +191,8 @@ parts:
       - lirc-x
       - lirc-drv-irman
       - libaudcore5
+    organize:
+      snap/audacious-plugins/current/usr: usr
       
   ffmpeg:
     # WORKAROUND:
