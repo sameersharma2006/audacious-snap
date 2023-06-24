@@ -56,7 +56,7 @@ parts:
     after: [ffmpeg]
     plugin: meson
     meson-parameters:
-       - -Dprefix=/snap/audacious/current/usr
+       - -Dprefix=/usr
        - -Dgtk3=true
        - -Dqt=false
        - -Dbuildstamp='Snapcraft'
@@ -95,16 +95,13 @@ parts:
       - libmms0
       - libneon27
       - libfaad2
-    organize:
-      snap/audacious/current/usr: usr
-    
     
   audacious-plugins:
     after: [audacious]
     source: https://github.com/audacious-media-player/audacious-plugins.git 
     plugin: meson
     meson-parameters:
-       - -Dprefix=usr
+       - -Dprefix=/usr
        - -Dgtk3=true
        - -Dqt=false
     build-packages:
@@ -188,7 +185,7 @@ parts:
       - lirc-x
       - lirc-drv-irman
       - libaudcore5
-   
+    
   ffmpeg:
     # WORKAROUND:
     # Build from source because the ffmpeg package installs libraries as dependencies
@@ -199,6 +196,7 @@ parts:
     autotools-configure-parameters:
       # WORKAROUND: Install to /usr instead of /usr/local because it's not in search paths
       - --prefix=/usr
+      - --libdir=/usr/lib/$CRAFT_ARCH_TRIPLET
       - --disable-debug
       - --disable-doc
       - --disable-static
