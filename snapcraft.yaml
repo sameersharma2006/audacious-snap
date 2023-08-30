@@ -112,6 +112,7 @@ parts:
       sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc  
     stage-packages:
       - libcue2
+      - liblirc-client0
       - libadplug-2.3.3-0
       - libbinio1v5
       - libsdl2-2.0-0
@@ -137,6 +138,8 @@ parts:
       - -usr/lib/*/libwayland*
       - -usr/lib/libopusurl*
       - -usr/lib/*/libirrecord*
+      - -usr/lib/*/liblirc.so*
+      - -usr/lib/*/liblirc_driver.so*
       - -usr/lib/libfdk*
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
