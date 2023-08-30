@@ -96,6 +96,7 @@ parts:
   
   audacious:
     source: https://github.com/audacious-media-player/audacious.git
+    source-tag: audacious-4.3.1
     parse-info: [contrib/audacious.appdata.xml]
     after: [ffmpeg]
     plugin: autotools
@@ -158,6 +159,7 @@ parts:
   audacious-plugins:
     after: [audacious]
     source: https://github.com/audacious-media-player/audacious-plugins.git 
+    source-tag: audacious-plugins-4.3.1
     plugin: meson
     meson-parameters:
       - -Dprefix=/usr
