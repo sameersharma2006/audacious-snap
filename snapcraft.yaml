@@ -90,6 +90,7 @@ parts:
       - -usr/share/man
       - -usr/share/X11
       - -usr/share/alsa
+      - -usr/share/ffmpeg/examples
       - -usr/include
       - -etc
       - -var  
@@ -144,6 +145,8 @@ parts:
       - -usr/lib/libfdk*
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
+      - -usr/lib/*/pulseaudio
+      - -usr/lib/X11
       - -usr/share/bug
       - -usr/share/doc
       - -usr/share/lintian
@@ -151,6 +154,7 @@ parts:
       - -usr/share/man
       - -usr/share/X11
       - -usr/share/alsa
+      - -usr/share/sounds
       - -usr/include
       - -etc
       - -var
