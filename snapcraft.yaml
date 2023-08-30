@@ -112,8 +112,6 @@ parts:
       sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc  
     stage-packages:
       - libcue2
-      - liblirc-client0
-      - liblirc0
       - libadplug-2.3.3-0
       - libbinio1v5
       - libsdl2-2.0-0
@@ -128,7 +126,6 @@ parts:
       - libsndio7.0
       - libmms0
       - libneon27
-      - libfaad2
     prime:
       - -usr/lib/*/libswscale.so*
       - -usr/lib/*/libavfilter.so*
@@ -137,6 +134,9 @@ parts:
       - -usr/lib/*/libavutil.so*
       - -usr/lib/*/libswresample.so*
       - -usr/lib/*/libfdk*
+      - -usr/lib/*/libwayland*
+      - -usr/lib/libopusurl*
+      - -usr/lib/*/libirrecord*
       - -usr/lib/libfdk*
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
@@ -149,6 +149,7 @@ parts:
       - -usr/share/alsa
       - -etc
       - -var
+      - -lib
       
   audacious-plugins:
     after: [audacious]
