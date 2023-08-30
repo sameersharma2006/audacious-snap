@@ -81,14 +81,6 @@ parts:
     stage-packages:
       - libmp3lame0
     prime:
-      - -usr/lib/*/libswscale.so*
-      - -usr/lib/*/libavfilter.so*
-      - -usr/lib/*/libavformat.so*
-      - -usr/lib/*/libavcodec.so*
-      - -usr/lib/*/libavutil.so*
-      - -usr/lib/*/libswresample.so*
-      - -usr/lib/*/libfdk*
-      - -usr/lib/libfdk*
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
       - -usr/share/bug
@@ -194,18 +186,9 @@ parts:
       - libsoxr-lsr0
       - liblirc-dev
     prime:
-      - -usr/lib/*/libswscale.so*
-      - -usr/lib/*/libavfilter.so*
-      - -usr/lib/*/libavformat.so*
-      - -usr/lib/*/libavcodec.so*
-      - -usr/lib/*/libavutil.so*
-      - -usr/lib/*/libswresample.so*
-      - -usr/lib/*/libfdk*
-      - -usr/lib/libfdk*
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
       - -usr/share/bug
-      - -usr/share/doc
       - -usr/share/lintian
       - -usr/share/pkgconfig
       - -usr/share/man
