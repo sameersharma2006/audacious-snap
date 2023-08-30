@@ -1,9 +1,6 @@
 name: audacious
 base: core22
 adopt-info: audacious
-summary: Lightweight Open Source Music player
-description: |
-  Audacious is a Lightweight Gtk + Music Player.
 grade: stable
 confinement: strict
 compression: lzo
@@ -16,7 +13,6 @@ layout:
   /usr/lib/audacious:
     symlink: $SNAP/usr/lib/audacious
 
-
 slots:
   audaious:
     interface: dbus
@@ -24,7 +20,6 @@ slots:
     name: org.atheme.audacious 
   mpris:
     name: audacious 
-  
   
 apps:
   audacious:
@@ -35,14 +30,10 @@ apps:
     plugs:
       - home
       - audio-playback
-      - audio-record
       - bluez
-      - bluetooth-control
-      - media-control
       - network-status
       - network
       - network-bind
-      - raw-usb
       - optical-drive
       - removable-media
       - unity7
@@ -51,30 +42,82 @@ apps:
       - mpris 
       
 parts:
+  fdk:
+    plugin: autotools
+    source: https://downloads.sourceforge.net/opencore-amr/fdk-aac-2.0.2.tar.gz
+    autotools-configure-parameters:
+      - --prefix=/usr 
+      - --disable-static
+    prime:
+      - -usr/include
+      - -usr/lib/pkgconfig
+      - -usr/lib/*/pkgconfig
+          
+  ffmpeg:
+    plugin: autotools
+    source: https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz
+    source-checksum: sha256/57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082
+    after: [fdk]
+    autotools-configure-parameters:
+      - --prefix=/usr
+      - --libdir=/usr/lib/$CRAFT_ARCH_TRIPLET
+      - --disable-debug
+      - --disable-doc
+      - --disable-static
+      - --enable-gpl
+      - --enable-shared
+      - --disable-ffplay
+      - --disable-devices
+      - --enable-gnutls
+      - --enable-libmp3lame
+      - --enable-libvorbis
+      - --enable-libfdk-aac
+      - --enable-nonfree
+    build-packages:
+      - nasm
+      - libgnutls28-dev
+      - libmp3lame-dev
+      - libvorbis-dev
+    stage-packages:
+      - libmp3lame0
+    prime:
+      - -usr/lib/*/libswscale.so*
+      - -usr/lib/*/libavfilter.so*
+      - -usr/lib/*/libavformat.so*
+      - -usr/lib/*/libavcodec.so*
+      - -usr/lib/*/libavutil.so*
+      - -usr/lib/*/libswresample.so*
+      - -usr/lib/*/libfdk*
+      - -usr/lib/libfdk*
+      - -usr/lib/pkgconfig
+      - -usr/lib/*/pkgconfig
+      - -usr/share/bug
+      - -usr/share/doc
+      - -usr/share/lintian
+      - -usr/share/pkgconfig
+      - -usr/share/man
+      - -usr/share/X11
+      - -usr/share/alsa
+      - -usr/include
+      - -etc
+      - -var  
+  
   audacious:
     source: https://github.com/audacious-media-player/audacious.git
+    parse-info: [contrib/audacious.appdata.xml]
     after: [ffmpeg]
-    plugin: meson
-    meson-parameters:
-       - -Dprefix=/usr
-       - -Dgtk3=true
-       - -Dqt=false
-       - -Dbuildstamp='Snapcraft'
+    plugin: autotools
+    autotools-configure-parameters:
+      - --prefix=/usr
+      - --enable-gtk3
+      - --disable-qt
+      - --with-buildstamp='Snapcraft' 
     override-pull: |
       craftctl default
-      craftctl set version=$(git describe --tags --abbrev=0)
-    build-packages:
-      - curl
-      - build-essential
-      - make
-      - git
-      - autotools-dev
-      - automake
-      - autoconf
-      - autopoint
-      - libtool
-      - libtool-bin
-          
+      sed -e 's|Icon=audacious|Icon=${SNAP}/usr/share/icons/hicolor/scalable/apps/audacious.svg|' -i audacious.desktop
+    override-stage: |
+      craftctl default
+      sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc  
     stage-packages:
       - libcue2
       - liblirc-client0
@@ -90,149 +133,97 @@ parts:
       - libcdio19
       - libcdio-cdda2
       - libopusfile0
-      - libpipewire-0.3-0
       - libsndio7.0
       - libmms0
       - libneon27
       - libfaad2
-    
+    prime:
+      - -usr/lib/*/libswscale.so*
+      - -usr/lib/*/libavfilter.so*
+      - -usr/lib/*/libavformat.so*
+      - -usr/lib/*/libavcodec.so*
+      - -usr/lib/*/libavutil.so*
+      - -usr/lib/*/libswresample.so*
+      - -usr/lib/*/libfdk*
+      - -usr/lib/libfdk*
+      - -usr/lib/pkgconfig
+      - -usr/lib/*/pkgconfig
+      - -usr/share/bug
+      - -usr/share/doc
+      - -usr/share/lintian
+      - -usr/share/pkgconfig
+      - -usr/share/man
+      - -usr/share/X11
+      - -usr/share/alsa
+      - -etc
+      - -var
+      
   audacious-plugins:
     after: [audacious]
     source: https://github.com/audacious-media-player/audacious-plugins.git 
     plugin: meson
     meson-parameters:
-       - -Dprefix=/usr
-       - -Dgtk3=true
-       - -Dqt=false
+      - -Dprefix=/usr
+      - -Dgtk3=true
+      - -Dqt=false
     build-packages:
-      - curl
-      - build-essential
-      - make
-      - git
-      - autotools-dev
-      - automake
-      - autoconf
-      - autopoint
-      - libtool
-      - libtool-bin    
-      - libcdio19
-      - libcdio-utils
       - libcdio-dev
-      - libcdio-cdda2
       - libcdio-cdda-dev
       - libcdio++-dev
-      - libcdio++1
-      - libcddb2
       - libcddb2-dev
-      - libadplug-2.3.3-0
       - libadplug-dev
-      - adplug-utils
       - oggfwd
       - oggz-tools
       - vorbisgain
-      - xmms2-plugin-all
       - libopus-dev
-      - libopus0
       - libopusfile-dev
-      - libopusfile0
-      - opus-tools
-      - flac
-      - libflac++-dev
-      - libflac++6v5
       - libflac-dev
-      - libflac8
-      - fluidsynth
       - libfluidsynth-dev
-      - libfluidsynth3
-      - libmpg123-0
       - libmpg123-dev
-      - wavpack
       - libwavpack-dev
-      - libwavpack1
-      - libcue2
       - libcue-dev
-      - libpipewire-0.3-0
-      - libpipewire-0.3-common
-      - libpipewire-0.3-dev
-      - libpipewire-0.3-modules
-      - libspa-0.2-bluetooth
       - libspa-0.2-dev
-      - libspa-0.2-jack
-      - libspa-0.2-modules
-      - libneon27
       - libneon27-dev
-      - libgtk2.0-dev
-      - libgtk2.0-0
-      - libgtk2.0-bin
-      - libgtk2.0-cil
-      - libgtk2.0-cil-dev 
-      - libmms0
       - libmms-dev
       - libmodplug1
       - libopenmpt0
       - libopenmpt-modplug1
       - libsidplayfp6
       - libbs2b0
-      - libsamplerate0
       - libsoxr0
       - libsoxr-lsr0
-      - lirc
-      - libfaad-dev
-      - liblirc-client0
-      - liblirc0
       - liblirc-dev
-      - pulseaudio-module-lirc
-      - lirc-x
-      - lirc-drv-irman
-      - libaudcore5
-    
-  ffmpeg:
-    # WORKAROUND:
-    # Build from source because the ffmpeg package installs libraries as dependencies
-    # that conflict with the Gnome extension
-    plugin: autotools
-    source: https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz
-    source-checksum: sha256/57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082
-    autotools-configure-parameters:
-      # WORKAROUND: Install to /usr instead of /usr/local because it's not in search paths
-      - --prefix=/usr
-      - --libdir=/usr/lib/$CRAFT_ARCH_TRIPLET
-      - --disable-debug
-      - --disable-doc
-      - --disable-static
-      - --enable-avcodec
-      - --enable-gpl
-      - --enable-shared
-      - --disable-ffplay
-      - --disable-devices
-      - --enable-gnutls
-      - --enable-libmp3lame
-      - --enable-libvorbis
-      - --enable-avformat  
-      - --enable-libaom
-      - --enable-swresample
-      - --enable-libfdk-aac
-      - --enable-nonfree
-    build-packages:
-      - nasm
-      - libgnutls28-dev
-      - libfdk-aac-dev
-      - libmp3lame-dev
-      - libavformat-dev
-      - libvorbis-dev
-      - libavcodec-dev
-      - libaom-dev
-      - libswresample-dev
-    stage-packages:
-      - libmp3lame0
-      - libaom3
-      - libfdk-aac2
-    stage:
-      - -usr/include 
-    
+    prime:
+      - -usr/lib/*/libswscale.so*
+      - -usr/lib/*/libavfilter.so*
+      - -usr/lib/*/libavformat.so*
+      - -usr/lib/*/libavcodec.so*
+      - -usr/lib/*/libavutil.so*
+      - -usr/lib/*/libswresample.so*
+      - -usr/lib/*/libfdk*
+      - -usr/lib/libfdk*
+      - -usr/lib/pkgconfig
+      - -usr/lib/*/pkgconfig
+      - -usr/share/bug
+      - -usr/share/doc
+      - -usr/share/lintian
+      - -usr/share/pkgconfig
+      - -usr/share/man
+      - -usr/share/X11
+      - -usr/share/alsa
+      - -etc
+      - -var  
       
-      
-      
-     
-   
-   
+  cleanup:
+    after:  
+      - audacious-plugins
+    plugin: nil
+    build-snaps: 
+      - gnome-42-2204
+      - core22
+      - gtk-common-themes
+    override-prime: |
+      set -eux
+      for snap in "gnome-42-2204" "core22" "gtk-common-themes"; do
+          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" \;
+      done    
