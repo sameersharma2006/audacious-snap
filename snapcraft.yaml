@@ -14,7 +14,7 @@ layout:
     symlink: $SNAP/usr/lib/audacious
 
 slots:
-  audaious:
+  audacious:
     interface: dbus
     bus: session
     name: org.atheme.audacious 
