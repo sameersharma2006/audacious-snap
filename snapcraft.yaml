@@ -105,6 +105,7 @@ parts:
       - --prefix=/usr
       - --enable-gtk3
       - --disable-qt
+      - --enable-libarchive
       - --with-buildstamp='Snapcraft' 
     override-pull: |
       craftctl default
@@ -129,6 +130,9 @@ parts:
       - libsndio7.0
       - libmms0
       - libneon27
+      - libpipewire-0.3-0
+      - libfaad2
+      - libsamplerate0
     prime:
       - -usr/lib/*/libswscale.so*
       - -usr/lib/*/libavfilter.so*
@@ -169,6 +173,8 @@ parts:
       - -Dprefix=/usr
       - -Dgtk3=true
       - -Dqt=false
+    build-snaps:
+      - cmake  
     build-packages:
       - libcdio-dev
       - libcdio-cdda-dev
@@ -197,6 +203,9 @@ parts:
       - libsoxr-lsr0
       - liblirc-dev
       - libpipewire-0.3-dev
+      - libmp3lame-dev
+      - libfaad-dev
+      - libsamplerate0-dev
     prime:
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
