@@ -113,6 +113,8 @@ parts:
     override-stage: |
       craftctl default
       sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc  
+    build-packages:
+      - libarchive-dev
     stage-packages:
       - libcue2
       - liblirc-client0
