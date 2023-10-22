@@ -176,7 +176,6 @@ parts:
       - -usr/lib/*/liblirc.so*
       - -usr/lib/*/liblirc_driver.so*
       - -usr/lib/*/libfaad_drm.so*
-      - -usr/lib/libfdk*
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
       - -usr/lib/*/pulseaudio
