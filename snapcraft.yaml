@@ -8,7 +8,7 @@ architectures:
   - build-on: amd64
   - build-on: armhf
   - build-on: arm64
-  
+
 layout:
   /usr/lib/audacious:
     symlink: $SNAP/usr/lib/audacious
@@ -17,10 +17,10 @@ slots:
   audacious:
     interface: dbus
     bus: session
-    name: org.atheme.audacious 
+    name: org.atheme.audacious
   mpris:
-    name: audacious 
-  
+    name: audacious
+
 apps:
   audacious:
     command: usr/bin/audacious
@@ -39,25 +39,13 @@ apps:
       - unity7
       - screen-inhibit-control
     slots:
-      - mpris 
-      
+      - mpris
+
 parts:
-  fdk:
-    plugin: autotools
-    source: https://downloads.sourceforge.net/opencore-amr/fdk-aac-2.0.2.tar.gz
-    autotools-configure-parameters:
-      - --prefix=/usr 
-      - --disable-static
-    prime:
-      - -usr/include
-      - -usr/lib/pkgconfig
-      - -usr/lib/*/pkgconfig
-          
   ffmpeg:
     plugin: autotools
     source: https://ffmpeg.org/releases/ffmpeg-6.0.tar.xz
     source-checksum: sha256/57be87c22d9b49c112b6d24bc67d42508660e6b718b3db89c44e47e289137082
-    after: [fdk]
     autotools-configure-parameters:
       - --prefix=/usr
       - --libdir=/usr/lib/$CRAFT_ARCH_TRIPLET
@@ -75,26 +63,14 @@ parts:
       - --enable-nonfree
     build-packages:
       - nasm
-      - libgnutls28-dev
       - libmp3lame-dev
       - libvorbis-dev
-    stage-packages:
-      - libmp3lame0
+      - libfdk-aac-dev
     prime:
-      - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
-      - -usr/share/bug
-      - -usr/share/doc
-      - -usr/share/lintian
-      - -usr/share/pkgconfig
-      - -usr/share/man
-      - -usr/share/X11
-      - -usr/share/alsa
       - -usr/share/ffmpeg/examples
       - -usr/include
-      - -etc
-      - -var  
-  
+
   audacious:
     source: https://github.com/audacious-media-player/audacious.git
     source-tag: audacious-4.3.1
@@ -106,70 +82,19 @@ parts:
       - --enable-gtk3
       - --disable-qt
       - --enable-libarchive
-      - --with-buildstamp='Snapcraft' 
+      - --with-buildstamp='Snapcraft'
     override-pull: |
       craftctl default
       sed -e 's|Icon=audacious|Icon=${SNAP}/usr/share/icons/hicolor/scalable/apps/audacious.svg|' -i audacious.desktop
     override-stage: |
       craftctl default
-      sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc  
+      sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc
     build-packages:
       - libarchive-dev
-    stage-packages:
-      - libcue2
-      - liblirc-client0
-      - libadplug-2.3.3-0
-      - libbinio1v5
-      - libsdl2-2.0-0
-      - libxss1
-      - libdecor-0-0
-      - libfluidsynth3
-      - libinstpatch-1.0-2
-      - libcddb2
-      - libcdio19
-      - libcdio-cdda2
-      - libopusfile0
-      - libsndio7.0
-      - libmms0
-      - libneon27
-      - libpipewire-0.3-0
-      - libfaad2
-      - libsamplerate0
-    prime:
-      - -usr/lib/*/libswscale.so*
-      - -usr/lib/*/libavfilter.so*
-      - -usr/lib/*/libavformat.so*
-      - -usr/lib/*/libavcodec.so*
-      - -usr/lib/*/libavutil.so*
-      - -usr/lib/*/libswresample.so*
-      - -usr/lib/*/libfdk*
-      - -usr/lib/*/libwayland*
-      - -usr/lib/libopusurl*
-      - -usr/lib/*/libirrecord*
-      - -usr/lib/*/liblirc.so*
-      - -usr/lib/*/liblirc_driver.so*
-      - -usr/lib/*/libfaad_drm.so*
-      - -usr/lib/libfdk*
-      - -usr/lib/pkgconfig
-      - -usr/lib/*/pkgconfig
-      - -usr/lib/*/pulseaudio
-      - -usr/lib/X11
-      - -usr/share/bug
-      - -usr/share/doc
-      - -usr/share/lintian
-      - -usr/share/pkgconfig
-      - -usr/share/man
-      - -usr/share/X11
-      - -usr/share/alsa
-      - -usr/share/sounds
-      - -usr/include
-      - -etc
-      - -var
-      - -lib
-      
+
   audacious-plugins:
     after: [audacious]
-    source: https://github.com/audacious-media-player/audacious-plugins.git 
+    source: https://github.com/audacious-media-player/audacious-plugins.git
     source-tag: audacious-plugins-4.3.1
     plugin: meson
     meson-parameters:
@@ -177,7 +102,7 @@ parts:
       - -Dgtk3=true
       - -Dqt=false
     build-snaps:
-      - cmake  
+      - cmake
     build-packages:
       - libcdio-dev
       - libcdio-cdda-dev
@@ -210,23 +135,58 @@ parts:
       - libfaad-dev
       - libsamplerate0-dev
     prime:
+      - -usr/include
+
+  deps:
+    after: [audacious-plugins]
+    plugin: nil
+    stage-packages:
+      - libcue2
+      - liblirc-client0
+      - libadplug-2.3.3-0
+      - libbinio1v5
+      - libsdl2-2.0-0
+      - libxss1
+      - libdecor-0-0
+      - libfluidsynth3
+      - libinstpatch-1.0-2
+      - libcddb2
+      - libcdio19
+      - libcdio-cdda2
+      - libopusfile0
+      - libsndio7.0
+      - libmms0
+      - libneon27
+      - libpipewire-0.3-0
+      - libfaad2
+      - libsamplerate0
+      - libfdk-aac2
+      - libmp3lame0
+    prime:
+      - usr/lib
+      - -usr/lib/*/libswscale.so*
+      - -usr/lib/*/libavfilter.so*
+      - -usr/lib/*/libavformat.so*
+      - -usr/lib/*/libavcodec.so*
+      - -usr/lib/*/libavutil.so*
+      - -usr/lib/*/libswresample.so*
+      - -usr/lib/*/libwayland*
+      - -usr/lib/libopusurl*
+      - -usr/lib/*/libirrecord*
+      - -usr/lib/*/liblirc.so*
+      - -usr/lib/*/liblirc_driver.so*
+      - -usr/lib/*/libfaad_drm.so*
+      - -usr/lib/libfdk*
       - -usr/lib/pkgconfig
       - -usr/lib/*/pkgconfig
-      - -usr/share/bug
-      - -usr/share/lintian
-      - -usr/share/pkgconfig
-      - -usr/share/man
-      - -usr/share/X11
-      - -usr/share/alsa
-      - -usr/include
-      - -etc
-      - -var  
-      
+      - -usr/lib/*/pulseaudio
+      - -usr/lib/X11
+
   cleanup:
-    after:  
-      - audacious-plugins
+    after:
+      - deps
     plugin: nil
-    build-snaps: 
+    build-snaps:
       - gnome-42-2204
       - core22
       - gtk-common-themes
@@ -234,4 +194,4 @@ parts:
       set -eux
       for snap in "gnome-42-2204" "core22" "gtk-common-themes"; do
           cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" \;
-      done    
+      done
