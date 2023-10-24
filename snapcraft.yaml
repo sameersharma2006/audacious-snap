@@ -91,6 +91,9 @@ parts:
       sed -i -e '/^plugin_dir=/s/\${exec_prefix}/\/usr/' usr/lib/pkgconfig/audacious.pc
     build-packages:
       - libarchive-dev
+    prime:
+      - -usr/include
+      - -usr/lib/pkgconfig
 
   audacious-plugins:
     after: [audacious]
@@ -136,6 +139,8 @@ parts:
       - libsamplerate0-dev
     prime:
       - -usr/include
+      - -usr/lib/pkgconfig
+      - -usr/lib/*/pkgconfig
 
   deps:
     after: [audacious-plugins]
@@ -164,12 +169,12 @@ parts:
       - libmp3lame0
     prime:
       - usr/lib
-      - -usr/lib/*/libswscale.so*
-      - -usr/lib/*/libavfilter.so*
-      - -usr/lib/*/libavformat.so*
-      - -usr/lib/*/libavcodec.so*
-      - -usr/lib/*/libavutil.so*
-      - -usr/lib/*/libswresample.so*
+      - -usr/lib/*/libswscale*
+      - -usr/lib/*/libavfilter*
+      - -usr/lib/*/libavformat*
+      - -usr/lib/*/libavcodec*
+      - -usr/lib/*/libavutil*
+      - -usr/lib/*/libswresample*
       - -usr/lib/*/libwayland*
       - -usr/lib/libopusurl*
       - -usr/lib/*/libirrecord*
