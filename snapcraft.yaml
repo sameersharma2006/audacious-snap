@@ -72,7 +72,7 @@ parts:
 
   audacious:
     source: https://github.com/audacious-media-player/audacious.git
-    #source-tag: audacious-4.3.1
+    source-tag: audacious-4.3.1
     parse-info: [contrib/audacious.appdata.xml]
     after: [ffmpeg]
     plugin: autotools
@@ -97,12 +97,20 @@ parts:
   audacious-plugins:
     after: [audacious]
     source: https://github.com/audacious-media-player/audacious-plugins.git
-    #source-tag: audacious-plugins-4.3.1
+    source-tag: audacious-plugins-4.3.1
     plugin: meson
     meson-parameters:
       - -Dprefix=/usr
       - -Dgtk3=true
       - -Dqt=false
+      - -Dalsa=false
+      - -Dfilewriter=false
+      - -Dpipewire=false
+      - -Djack=false
+      - -Dsndio=false
+      - -Doss=false
+      - -Dqtaudio=false
+      - -Dcoreaudio=false
     build-snaps:
       - cmake
     build-packages:
@@ -132,10 +140,10 @@ parts:
       - libsoxr0
       - libsoxr-lsr0
       - liblirc-dev
-      - libpipewire-0.3-dev
       - libmp3lame-dev
       - libfaad-dev
       - libsamplerate0-dev
+      - libjson-glib-dev
     prime:
       - -usr/include
       - -usr/lib/pkgconfig
@@ -158,14 +166,13 @@ parts:
       - libcdio19
       - libcdio-cdda2
       - libopusfile0
-      - libsndio7.0
       - libmms0
       - libneon27
-      - libpipewire-0.3-0
       - libfaad2
       - libsamplerate0
       - libfdk-aac2
       - libmp3lame0
+      - libjson-glib-1.0-0
     prime:
       - usr/lib
       - -usr/lib/*/libswscale*
