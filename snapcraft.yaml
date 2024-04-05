@@ -25,6 +25,8 @@ apps:
   audacious:
     command: usr/bin/audacious
     extensions: [gnome]
+    environment:
+      DISABLE_WAYLAND: 1
     common-id: org.atheme.audacious
     desktop: usr/share/applications/audacious.desktop
     plugs:
