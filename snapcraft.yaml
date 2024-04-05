@@ -143,7 +143,6 @@ parts:
       - libmp3lame-dev
       - libfaad-dev
       - libsamplerate0-dev
-      - libjson-glib-dev
     prime:
       - -usr/include
       - -usr/lib/pkgconfig
@@ -172,7 +171,6 @@ parts:
       - libsamplerate0
       - libfdk-aac2
       - libmp3lame0
-      - libjson-glib-1.0-0
     prime:
       - usr/lib
       - -usr/lib/*/libswscale*
