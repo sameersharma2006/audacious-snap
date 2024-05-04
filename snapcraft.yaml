@@ -36,7 +36,6 @@ apps:
       - network-status
       - network
       - network-bind
-      - optical-drive
       - removable-media
       - unity7
       - screen-inhibit-control
@@ -62,11 +61,13 @@ parts:
       - --enable-libvorbis
       - --enable-libfdk-aac
       - --enable-nonfree
+      - --enable-libopus
     build-packages:
       - nasm
       - libmp3lame-dev
       - libvorbis-dev
       - libfdk-aac-dev
+      - libopus-dev
     prime:
       - -usr/lib/*/pkgconfig
       - -usr/share/ffmpeg/examples
@@ -115,38 +116,31 @@ parts:
       - -Doss=false
       - -Dqtaudio=false
       - -Dcoreaudio=false
-    build-snaps:
-      - cmake
+      - -Dcdaudio=false
+      - -Dlirc=false
+      - -Dsid=false
+      - -Dampache=false
+      - -Dcue=false
+      - -Dadplug=false
+      - -Dopenmpt=false
+      - -Dsndfile=false
+      - -Dmodplug=false
+      - -Dmms=false
+      - -Dsoxr=false
+      - -Dbs2b=false
     build-packages:
-      - libcdio-dev
-      - libcdio-cdda-dev
-      - libcdio++-dev
-      - libcddb2-dev
-      - libadplug-dev
       - oggfwd
       - oggz-tools
       - vorbisgain
       - libopus-dev
       - libopusfile-dev
       - libflac-dev
-      - libfluidsynth-dev
       - libmpg123-dev
       - libwavpack-dev
-      - libcue-dev
-      - libspa-0.2-dev
       - libneon27-dev
-      - libmms-dev
-      - libmodplug1
-      - libopenmpt0
-      - libopenmpt-modplug1
-      - libsidplayfp6
-      - libbs2b0
-      - libsoxr0
-      - libsoxr-lsr0
-      - liblirc-dev
-      - libmp3lame-dev
       - libfaad-dev
       - libsamplerate0-dev
+      - cmake
     prime:
       - -usr/include
       - -usr/lib/pkgconfig
@@ -156,54 +150,37 @@ parts:
     after: [audacious-plugins]
     plugin: nil
     stage-packages:
-      - libcue2
-      - liblirc-client0
-      - libadplug-2.3.3-0
       - libbinio1v5
       - libsdl2-2.0-0
       - libxss1
       - libdecor-0-0
-      - libfluidsynth3
-      - libinstpatch-1.0-2
-      - libcddb2
-      - libcdio19
-      - libcdio-cdda2
       - libopusfile0
-      - libmms0
       - libneon27
       - libfaad2
       - libsamplerate0
       - libfdk-aac2
       - libmp3lame0
+      - libmpg123-0
+      - libvorbis0a
+      - libflac8
+      - libogg0
+      - vorbisgain
+      - libwavpack1
     prime:
-      - usr/lib
-      - -usr/lib/*/libswscale*
-      - -usr/lib/*/libavfilter*
-      - -usr/lib/*/libavformat*
-      - -usr/lib/*/libavcodec*
-      - -usr/lib/*/libavutil*
-      - -usr/lib/*/libswresample*
-      - -usr/lib/*/libwayland*
-      - -usr/lib/libopusurl*
-      - -usr/lib/*/libirrecord*
-      - -usr/lib/*/liblirc.so*
-      - -usr/lib/*/liblirc_driver.so*
-      - -usr/lib/*/libfaad_drm.so*
-      - -usr/lib/pkgconfig
-      - -usr/lib/*/pkgconfig
-      - -usr/lib/*/pulseaudio
-      - -usr/lib/X11
-
-  cleanup:
-    after:
-      - deps
-    plugin: nil
-    build-snaps:
-      - gnome-42-2204
-      - core22
-      - gtk-common-themes
-    override-prime: |
-      set -eux
-      for snap in "gnome-42-2204" "core22" "gtk-common-themes"; do
-          cd "/snap/$snap/current" && find . -type f,l -exec rm -f "$CRAFT_PRIME/{}" \;
-      done
+      - usr/lib/*/libbinio*
+      - usr/lib/*/libSDL2*
+      - usr/lib/*/libXss*
+      - usr/lib/*/libdecor*
+      - usr/lib/libopus*
+      - usr/lib/*/libopus*
+      - usr/lib/*/libneon*
+      - usr/lib/*/libfaad*
+      - usr/lib/*/libsamplerate*
+      - usr/lib/*/libfdk-aac*
+      - usr/lib/*/libmp3lame*
+      - usr/lib/*/libmpg123*
+      - usr/lib/*/libvorbis*
+      - usr/lib/*/libFLAC*
+      - usr/lib/*/libogg*
+      - usr/bin/vorbisgain
+      - usr/lib/*/libwavpack*
