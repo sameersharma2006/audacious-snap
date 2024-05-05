@@ -150,8 +150,6 @@ parts:
     after: [audacious-plugins]
     plugin: nil
     stage-packages:
-      - libbinio1v5
-      - libsdl2-2.0-0
       - libxss1
       - libdecor-0-0
       - libopusfile0
@@ -168,7 +166,6 @@ parts:
       - libwavpack1
     prime:
       - usr/lib/*/libbinio*
-      - usr/lib/*/libSDL2*
       - usr/lib/*/libXss*
       - usr/lib/*/libdecor*
       - usr/lib/libopus*
@@ -184,3 +181,5 @@ parts:
       - usr/lib/*/libogg*
       - usr/bin/vorbisgain
       - usr/lib/*/libwavpack*
+      - -usr/lib/*/libfaad_drm*
+      - -usr/lib/libopusurl*
